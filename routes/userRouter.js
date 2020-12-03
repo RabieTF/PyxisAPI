@@ -29,7 +29,8 @@ userRouter.post('/create', authenticateToken, async (req,res) => {  //Only an ad
         var result = await user.save();
         res.send(result);
     } catch (err) {
-        res.status(500).send(err);
+        console.log(err);
+        res.sendStatus(500);
     }
 });
 
@@ -37,18 +38,16 @@ userRouter.post('/login', async (req, res) => {
     try {
         var user = await User.findOne({username: req.body.username})
         if (!user) {
-            console.log("FIRST");
             return res.status(400).send({message: "The user doesn't exist"});
         }
         if (!bcrypt.compareSync(req.body.password, user.password)) {
-            console.log("SECOND")
             return res.status(400).send({message: "The password is invalid!"});
         }
-        const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET, {expiresIn: "30m"});
         res.json({accessToken: accessToken});
     } catch (err) {
-        console.log("ERROR: ", err);
-        res.status(501).send({"ERROR": "CONSULT YOUR ADMINISTRATOR"});
+        console.log(err);
+        res.sendStatus(500);
     }
 })
 

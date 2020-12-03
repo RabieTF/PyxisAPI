@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 require('dotenv').config();
 
 var userRouter = require('./routes/userRouter');
+var messageRouter = require('./routes/messageRouter');
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DB_ACCESS , { useNewUrlParser: true, useUnifiedTopology: true })
@@ -20,5 +21,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/user', userRouter);
+app.use('/message', messageRouter);
 
 module.exports = app;

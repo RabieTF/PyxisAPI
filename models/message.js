@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
-    _id: {
-        type: Schema.Types.ObjectId,
-        required: true
-    }, 
     email:{
         type: String,
         required: true
@@ -20,7 +16,11 @@ const messageSchema = new Schema({
     },
     date: {
         type: Date,
-        required: true
+        default: new Date()
+    },
+    read: {
+        type: Boolean,
+        default: false
     }
 });
 
